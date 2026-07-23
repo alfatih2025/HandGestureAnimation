@@ -1,4 +1,4 @@
-# 🖐️ AI Hand Gesture Controller with ESP32 LED Communication
+# 🖐️ AI Hand Gesture Controller dengan ESP32 menggunakan Computer Vision
 
 <div align="center">
 
@@ -8,115 +8,112 @@
 ![OpenGL](https://img.shields.io/badge/OpenGL-3D-orange)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
-**Real-Time Hand Gesture Recognition using Artificial Intelligence with Computer Vision and Serial Communication to ESP32**
+### **Sistem Kendali LED ESP32 Menggunakan Pengenalan Gestur Tangan Berbasis Artificial Intelligence (Computer Vision)**
 
 </div>
 
 ---
 
-# 📖 Overview
+# 📖 Deskripsi Proyek
 
-This project demonstrates how Artificial Intelligence (Computer Vision) can control hardware in real-time.
+Proyek ini merupakan implementasi **Artificial Intelligence (AI)** berbasis **Computer Vision** yang mampu mengenali gestur tangan secara *real-time* menggunakan **MediaPipe**, kemudian mengirimkan perintah ke **ESP32** melalui komunikasi **Serial USB**.
 
-The Python application uses **MediaPipe Hand Tracking** to recognize hand gestures from a webcam. Every detected gesture changes a 3D particle visualization rendered with OpenGL. One specific gesture also sends a serial command to an ESP32, allowing physical hardware (built-in LED) to respond instantly.
+Selain mengendalikan perangkat keras (LED pada ESP32), aplikasi juga menampilkan **visualisasi partikel 3D interaktif menggunakan OpenGL**, sehingga setiap gestur tangan menghasilkan bentuk animasi yang berbeda.
 
-The communication protocol between Python and ESP32 is intentionally lightweight by transmitting only a single character through Serial.
+Proyek ini menggabungkan beberapa teknologi modern dalam satu sistem, yaitu:
 
-```
-Webcam
-   │
-   ▼
-MediaPipe AI
-   │
-   ▼
-Gesture Detection
-   │
-   ├────────► OpenGL Visualization
-   │
-   ▼
-Serial Communication
-   │
-   ▼
-ESP32
-   │
-   ▼
-Built-in LED
-```
+* Artificial Intelligence (Computer Vision)
+* MediaPipe Hand Tracking
+* OpenGL 3D Visualization
+* Komunikasi Serial Python ↔ ESP32
+* Embedded System menggunakan ESP32
 
 ---
 
-# ✨ Features
+# ✨ Fitur Utama
 
-- Real-time hand tracking
-- AI gesture recognition
-- OpenGL 3D particle animation
-- Multi-mode visualization
-- ESP32 serial communication
-- Low latency hardware control
-- Automatic LED synchronization
-- Simulation mode when ESP32 is disconnected
+✅ Deteksi tangan secara **real-time**
+
+✅ Pengenalan berbagai gestur tangan
+
+✅ Visualisasi partikel 3D menggunakan OpenGL
+
+✅ Komunikasi Serial Python ke ESP32
+
+✅ Kontrol LED bawaan ESP32
+
+✅ Mode simulasi apabila ESP32 tidak terhubung
+
+✅ Latensi komunikasi sangat rendah
 
 ---
 
-# 📂 Project Structure
+# 🏗️ Arsitektur Sistem
 
 ```
-AI-Hand-Gesture-ESP32/
-│
-├── Arduino/
-│   └── ESP32_LED_Controller.ino
-│
-├── Python/
-│   ├── main.py
-│   └── logo.jpg
-│
-├── requirements.txt
-│
-├── README.md
-│
-└── LICENSE
+                Webcam
+                   │
+                   ▼
+        MediaPipe Hand Tracking
+                   │
+                   ▼
+          Deteksi Gestur Tangan
+                   │
+        ┌──────────┴──────────┐
+        │                     │
+        ▼                     ▼
+Visualisasi OpenGL      Serial Communication
+      3D                      (USB)
+                                │
+                                ▼
+                             ESP32
+                                │
+                                ▼
+                          LED Built-in
 ```
 
 ---
 
-# 🛠 Hardware Requirements
+# 🛠️ Kebutuhan Perangkat Keras
 
-- ESP32 DevKit
-- USB Cable
-- Computer
-- Webcam
+* ESP32 DevKit
+* Kabel USB Data
+* Laptop / PC
+* Webcam
 
-Optional
+### Opsional
 
-- External LED
-- Breadboard
+* Breadboard
+* LED Eksternal
+* Resistor 220Ω
 
 ---
 
-# 💻 Software Requirements
+# 💻 Kebutuhan Perangkat Lunak
 
 ## Arduino IDE
 
 Install:
 
-- ESP32 Board Package
-- USB Driver (CP210x / CH340)
+* Arduino IDE versi terbaru
+* ESP32 Board Package
+* Driver USB (CP210x / CH340)
 
 ---
 
 ## Python
 
-Python Version
+Versi yang direkomendasikan
 
 ```
-Python 3.10+
+Python 3.10 atau lebih baru
 ```
 
 ---
 
-# 📦 Python Libraries
+# 📦 Instalasi Library Python
 
-Install all dependencies:
+Install seluruh library berikut
 
 ```bash
 pip install opencv-python
@@ -127,13 +124,13 @@ pip install numpy
 pip install pyserial
 ```
 
-or
+Atau menggunakan
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Example requirements.txt
+Isi `requirements.txt`
 
 ```txt
 opencv-python
@@ -146,55 +143,57 @@ pyserial
 
 ---
 
-# ⚙ ESP32 Setup
+# ⚙️ Konfigurasi ESP32
 
-Open
+Buka file
 
 ```
 ESP32_LED_Controller.ino
 ```
 
-Upload to ESP32.
+Upload ke board ESP32 menggunakan Arduino IDE.
 
-Code:
+Program ESP32 bertugas menerima karakter dari Python melalui komunikasi serial.
 
 ```cpp
 const int ledPin = 2;
 
 void setup() {
-  Serial.begin(115200);
-  pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, LOW);
+    Serial.begin(115200);
+    pinMode(ledPin, OUTPUT);
+    digitalWrite(ledPin, LOW);
 }
 
 void loop() {
 
-  if (Serial.available()) {
+    if (Serial.available()) {
 
-    char command = Serial.read();
+        char command = Serial.read();
 
-    if(command=='1')
-      digitalWrite(ledPin,HIGH);
+        if(command=='1')
+            digitalWrite(ledPin,HIGH);
 
-    else if(command=='0')
-      digitalWrite(ledPin,LOW);
-  }
+        else if(command=='0')
+            digitalWrite(ledPin,LOW);
+
+    }
+
 }
 ```
 
 ---
 
-# ⚙ Configure Python
+# ⚙️ Konfigurasi Program Python
 
-Open
+Pada file Python terdapat konfigurasi berikut
 
 ```python
 SERIAL_PORT = "COM3"
 ```
 
-Replace with your own port.
+Sesuaikan dengan port ESP32 Anda.
 
-Example
+### Contoh
 
 Windows
 
@@ -211,10 +210,10 @@ Linux
 macOS
 
 ```python
-/dev/cu.usbserial
+/ dev/cu.usbserial
 ```
 
-Baudrate must match the ESP32
+Pastikan baudrate sama
 
 ```python
 115200
@@ -222,23 +221,27 @@ Baudrate must match the ESP32
 
 ---
 
-# ▶ Running the Project
+# ▶️ Cara Menjalankan Program
 
-## Step 1
+## 1. Hubungkan ESP32
 
-Connect ESP32
-
----
-
-## Step 2
-
-Upload Arduino Sketch
+Hubungkan board ESP32 ke komputer menggunakan kabel USB.
 
 ---
 
-## Step 3
+## 2. Upload Program Arduino
 
-Install Python dependencies
+Upload file
+
+```
+ESP32_LED_Controller.ino
+```
+
+hingga berhasil.
+
+---
+
+## 3. Install Library Python
 
 ```bash
 pip install -r requirements.txt
@@ -246,166 +249,165 @@ pip install -r requirements.txt
 
 ---
 
-## Step 4
-
-Run
+## 4. Jalankan Program
 
 ```bash
 python main.py
 ```
 
----
+Apabila seluruh konfigurasi benar maka akan muncul:
 
-# 🎮 Gesture Mapping
-
-| Gesture | Mode | Visualization | ESP32 |
-|----------|------|--------------|--------|
-| Open Hand | 1 | Space | OFF |
-| Index Finger | 2 | Saturn | OFF |
-| Peace | 3 | C.R.E.S.T Text | OFF |
-| Closed Fist | 4 | Heart | OFF |
-| Three Fingers | 5 | Logo | OFF |
-| Four Fingers | 6 | Hardware Mode | LED ON |
+* Kamera aktif
+* Visualisasi 3D
+* Status koneksi ESP32
+* Deteksi gestur tangan
 
 ---
 
-# 🔌 Serial Communication
+# ✋ Daftar Gestur Tangan
 
-Python only sends one byte.
+| Gestur         | Mode   | Visualisasi       | ESP32  |
+| -------------- | ------ | ----------------- | ------ |
+| Tangan Terbuka | Mode 1 | Partikel Kosmos   | OFF    |
+| Telunjuk       | Mode 2 | Planet Saturnus   | OFF    |
+| Peace (✌)      | Mode 3 | Tulisan C.R.E.S.T | OFF    |
+| Genggam        | Mode 4 | Bentuk Hati       | OFF    |
+| Tiga Jari      | Mode 5 | Logo Berwarna     | OFF    |
+| Empat Jari     | Mode 6 | Hardware Mode     | LED ON |
 
-LED ON
+---
+
+# 🔌 Protokol Komunikasi Serial
+
+Program Python hanya mengirim **1 karakter** ke ESP32.
+
+### Menyalakan LED
 
 ```
 1
 ```
 
-LED OFF
-
-```
-0
-```
-
-Example
+Python
 
 ```python
 esp32.write(b'1')
 ```
 
-```python
-esp32.write(b'0')
-```
-
-ESP32 receives
+ESP32
 
 ```cpp
 char command = Serial.read();
 ```
 
-This protocol minimizes communication latency while maintaining reliable synchronization.
-
 ---
 
-# 🧠 Gesture Detection Pipeline
+### Mematikan LED
 
 ```
-Webcam
+0
+```
 
-      │
+Python
 
-      ▼
-
-MediaPipe
-
-      │
-
-      ▼
-
-21 Hand Landmarks
-
-      │
-
-      ▼
-
-Finger State Analysis
-
-      │
-
-      ▼
-
-Gesture Classification
-
-      │
-
-      ├────────► 3D Visualization
-
-      │
-
-      ▼
-
-Serial Communication
-
-      │
-
-      ▼
+```python
+esp32.write(b'0')
+```
 
 ESP32
 
-      │
+```cpp
+char command = Serial.read();
+```
 
-      ▼
+Pengiriman hanya satu karakter membuat komunikasi menjadi sangat cepat dan efisien.
 
-LED
+---
+
+# 🧠 Alur Kerja Sistem
+
+```
+Webcam
+    │
+    ▼
+MediaPipe AI
+    │
+    ▼
+Deteksi Landmark Tangan
+    │
+    ▼
+Analisis Posisi Jari
+    │
+    ▼
+Klasifikasi Gestur
+    │
+    ├────────► Visualisasi OpenGL
+    │
+    ▼
+Komunikasi Serial
+    │
+    ▼
+ESP32
+    │
+    ▼
+LED Built-in
 ```
 
 ---
 
-# 📷 User Interface
+# 🖥️ Tampilan Program
 
-The application displays
+Program menampilkan dua jendela utama.
 
-- Live camera feed
-- Hand skeleton
-- Current gesture mode
-- ESP32 connection status
-- Real-time OpenGL particle visualization
+### 1. OpenCV
+
+Menampilkan:
+
+* Kamera
+* Skeleton tangan
+* Nama mode gestur
+* Status koneksi ESP32
+
+### 2. OpenGL
+
+Menampilkan animasi partikel 3D sesuai gestur tangan.
 
 ---
 
-# ⚡ Performance
+# ⚡ Performa
 
-Approximate performance on a modern PC
+Estimasi performa pada komputer dengan spesifikasi menengah.
 
-| Component | Performance |
-|------------|------------|
-| Camera | 30 FPS |
-| OpenGL | 60 FPS |
-| MediaPipe | Real-Time |
-| Serial Delay | <10 ms |
+| Komponen          | Performa  |
+| ----------------- | --------- |
+| Kamera            | ±30 FPS   |
+| OpenGL            | ±60 FPS   |
+| MediaPipe         | Real-Time |
+| Komunikasi Serial | <10 ms    |
 
 ---
 
 # 🔍 Troubleshooting
 
-## ESP32 Not Detected
+## ESP32 Tidak Terdeteksi
 
-Check
+Periksa:
 
-- USB cable
-- COM port
-- USB Driver
-- Arduino IDE Port
+* Kabel USB
+* Driver USB
+* Port COM
+* Board ESP32
 
 ---
 
-## Camera Cannot Open
+## Kamera Tidak Menyala
 
-Verify
+Pastikan
 
 ```python
 cv2.VideoCapture(0)
 ```
 
-Try
+Apabila gagal coba
 
 ```python
 cv2.VideoCapture(1)
@@ -413,20 +415,20 @@ cv2.VideoCapture(1)
 
 ---
 
-## LED Doesn't Turn On
+## LED Tidak Menyala
 
-Verify
+Pastikan
 
-- Correct COM port
-- Baudrate 115200
-- Successful upload
-- Built-in LED pin (GPIO2)
+* Port COM benar
+* Baudrate 115200
+* Program berhasil di-upload
+* LED bawaan menggunakan GPIO2
 
 ---
 
-## Missing Python Modules
+## Modul Python Tidak Ditemukan
 
-Install
+Install ulang seluruh library
 
 ```bash
 pip install -r requirements.txt
@@ -434,24 +436,33 @@ pip install -r requirements.txt
 
 ---
 
-# 🚀 Future Improvements
+# 🚀 Pengembangan Selanjutnya
 
-- MQTT Communication
-- WiFi ESP32 Control
-- Multiple ESP32 Devices
-- Voice Command
-- YOLO Object Detection
-- TensorFlow Gesture Recognition
-- OLED Display Integration
-- Home Automation Support
+Beberapa fitur yang dapat ditambahkan:
+
+* MQTT Communication
+* Kontrol ESP32 melalui WiFi
+* Integrasi Node-RED
+* Dashboard Monitoring IoT
+* TensorFlow Gesture Recognition
+* YOLO Object Detection
+* OLED Display ESP32
+* Smart Home Automation
+* Kendali Robot menggunakan Gestur Tangan
 
 ---
 
-# 👨‍💻 Author
+# 👨‍💻 Pengembang
 
 **Habibullah Naja Alfatih Wibowo**
 
-AI • IoT • Embedded Systems • Software Development
+**Bidang Keahlian**
+
+* Artificial Intelligence
+* Internet of Things (IoT)
+* Embedded Systems
+* Computer Vision
+* Software Development
 
 GitHub
 
@@ -461,16 +472,16 @@ https://github.com/alfatih2025
 
 ---
 
-# 📄 License
+# 📄 Lisensi
 
-This project is licensed under the MIT License.
+Proyek ini menggunakan lisensi **MIT License**.
 
-Feel free to use, modify, and distribute this project for educational and research purposes.
+Silakan menggunakan, mempelajari, mengembangkan, maupun memodifikasi proyek ini untuk keperluan pendidikan, penelitian, maupun pengembangan teknologi.
 
 ---
 
 <div align="center">
 
-⭐ If you find this project useful, consider giving it a star on GitHub.
+⭐ Apabila proyek ini bermanfaat, jangan lupa berikan **Star** pada repository GitHub.
 
 </div>
