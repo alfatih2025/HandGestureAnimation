@@ -40,7 +40,7 @@ shared_data = {
 
 pos_space = np.random.uniform(-4.0, 4.0, (NUM_PARTICLES, 3))
 
-# Mode 2: Saturnus
+
 pos_planet = np.zeros((NUM_PARTICLES, 3))
 NUM_SPHERE = 1500  
 for i in range(NUM_SPHERE):
@@ -59,7 +59,7 @@ for i in range(NUM_SPHERE, NUM_PARTICLES):
     pos_planet[i, 1] = np.random.uniform(-0.05, 0.05)  
     pos_planet[i, 2] = r * np.sin(theta)
 
-# Mode 3: Tulisan "C.R.E.S.T"
+
 text_img = np.zeros((200, 800), dtype=np.uint8)
 cv2.putText(text_img, "C.R.E.S.T", (50, 130), cv2.FONT_HERSHEY_SIMPLEX, 3.5, 255, 12, cv2.LINE_AA)
 y_indices, x_indices = np.where(text_img > 0)
@@ -71,7 +71,7 @@ text_points = np.stack((x_text, y_text, z_text), axis=-1)
 chosen_indices = np.random.choice(len(text_points), NUM_PARTICLES)
 pos_text = text_points[chosen_indices]
 
-# Mode 4: Bentuk Hati / Love
+
 pos_heart = np.zeros((NUM_PARTICLES, 3))
 for i in range(NUM_PARTICLES):
     t = np.random.uniform(-np.pi, np.pi)
