@@ -9,16 +9,14 @@ import math
 import threading
 import time
 import os
-import serial  # Tambahan library untuk komunikasi dengan ESP32
+import serial  
 
-# ==========================================
-# KONFIGURASI & INISIALISASI
-# ==========================================
+
 WIDTH, HEIGHT = 1000, 700
 NUM_PARTICLES = 5000  
 
-# Konfigurasi ESP32
-SERIAL_PORT = 'COM3'  # UBAH INI SESUAI PORT ESP32 ANDA DI ARDUINO IDE!
+
+SERIAL_PORT = 'COM6'
 BAUD_RATE = 115200
 
 try:
@@ -39,9 +37,7 @@ shared_data = {
     "running": True
 }
 
-# ==========================================
-# GENERASI DATA BENTUK (PARTIKEL 3D)
-# ==========================================
+
 pos_space = np.random.uniform(-4.0, 4.0, (NUM_PARTICLES, 3))
 
 # Mode 2: Saturnus
